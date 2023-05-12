@@ -12,3 +12,5 @@ maui/InterestPointClient/.vs/
 *.cache
 
 server/Backend/Backend/obj/Debug/net6.0/
+
+server/Backend/Backend/obj/
