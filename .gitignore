@@ -8,3 +8,7 @@ maui/InterestPointClient/.vs/InterestPointClient/v17/
 maui/.vs/
 
 maui/InterestPointClient/.vs/
+
+*.cache
+
+server/Backend/Backend/obj/Debug/net6.0/
