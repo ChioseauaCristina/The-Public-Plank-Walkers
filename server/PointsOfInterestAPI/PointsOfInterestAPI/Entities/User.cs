@@ -1,10 +1,12 @@
-﻿namespace Backend.Data.Models
+﻿using PointsOfInterestAPI.Entities;
+
+namespace Backend.Data.Models
 {
     public class User : TimestampedModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
-        public List<InterestPoint>? PointsList { get; set; }
+        public List<PoI>? PointsList { get; set; }
     }
 }

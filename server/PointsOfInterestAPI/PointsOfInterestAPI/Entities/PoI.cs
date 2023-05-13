@@ -1,7 +1,13 @@
-﻿namespace PointsOfInterestAPI.Entities
+﻿using Backend.Data.Models;
+
+namespace PointsOfInterestAPI.Entities
 {
     public class PoI
     {
-        public int Id { get; set; }     
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public List<Que> QueList { get; set; } 
+        public int VirtualQue { get; set; }
     }
 }
