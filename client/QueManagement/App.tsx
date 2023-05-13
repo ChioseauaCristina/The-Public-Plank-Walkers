@@ -28,6 +28,7 @@ import {
 import MapView, {Marker} from "react-native-maps";
 import { Icon } from '@rneui/themed';
 import {Map} from "./Components/Map";
+import BottomSheet from "./Components/BottomSheet";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -56,7 +57,7 @@ function App(): JSX.Element {
         {/*  >*/}
         {/*  </Drawer.Navigator>*/}
         {/*</NavigationContainer>*/}
-        <Map />
+        <BottomSheet />
       </SafeAreaView>
   );
 }

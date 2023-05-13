@@ -1,11 +1,13 @@
 /* eslint-disable no-undef */
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, PermissionsAndroid, StyleSheet, Text, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {Icon} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import {fetchInterestPoints} from "../Api";
 import axios from "axios";
+import SlidingUpPanel from "rn-sliding-up-panel";
+import BottomSheet from "./BottomSheet";
 
 interface InterestPoint {
   latitude: number;
@@ -18,6 +20,14 @@ const initialInterestPoints = [
   {latitude: 45.75852373718626, longitude: 21.22326607813157, id: '2'},
 ];
 
+const styles1 = {
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}
 export const Map = () => {
   const [interestPoints, setInterestPoints] = useState<InterestPoint[]>(
     initialInterestPoints,
@@ -25,7 +35,7 @@ export const Map = () => {
   const [initialPosition, setInitialPosition] = useState<{
     latitude: number;
     longitude: number;
-  }>({latitude: 45.75669736751978, longitude: 21.22576658496006});
+  }>({latitude: 45.74632, longitude: 21.23904});
 
   const getInterestPoints = () => {
       fetchInterestPoints()
@@ -41,18 +51,41 @@ export const Map = () => {
         .catch((err) => console.log(err));
   }
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position =>
-        setInitialPosition(prevPosition => ({
-          ...prevPosition,
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        })),
-      error => console.log(error),
+    useEffect(() => {
+      //requestLocationPermission().then(() => console.log("successs"));
+      Geolocation.getCurrentPosition(
+        position =>
+          setInitialPosition(prevPosition => ({
+            ...prevPosition,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          })),
+        error => {console.log(error);console.log("kkkkk")},
     );
     //getInterestPoints();
   }, []);
+
+  async function requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location permission',
+            message: 'This app needs access to your location.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Location permission granted');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
 
   return (
     <View style={styles.MainContainer}>
@@ -76,8 +109,6 @@ export const Map = () => {
               longitude: marker.longitude,
             }}
             onPress={() => console.log(marker.id)}
-            //title={marker.title}
-            //description={marker.description}
           >
             <Icon name="festival" type="materialicons" color="black" />
           </Marker>
