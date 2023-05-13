@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import {ScrollView, StyleSheet, Text, View } from "react-native"
+import { Camera } from "./Camera"
 import CustomButton from "./CustomButton"
 import CustomInput from "./CustomInputs"
 import { ShopForm } from "./ShopForm"
@@ -40,7 +41,9 @@ export const LogInScreen = () => {
                             </ScrollView>
                         );
                     case 1:
-                        return <ShopForm />;
+                        return <ShopForm onSubmit = {() => setIsLoggedIn(2)}/>;
+                    case 2:
+                        return <Camera />
                     default:
                         return null;
                 }

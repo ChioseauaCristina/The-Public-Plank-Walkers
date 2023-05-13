@@ -5,7 +5,12 @@ import { CustomInputShop } from "./CustomInputSgop";
 import {Controller, FieldValues, useForm} from 'react-hook-form';
 import axios from "axios";
 
-export const ShopForm = () => {
+
+interface ShopFormProps {
+    onSubmit: any;
+}
+
+export const ShopForm = (props: ShopFormProps) => {
     const {control, handleSubmit} = useForm();
     const postShopForm = async (data: FieldValues) => {
         const response = await axios
@@ -28,6 +33,7 @@ export const ShopForm = () => {
         } catch (e: any) {
             console.log(e);
         }
+        props.onSubmit();
     };
 
     return (
