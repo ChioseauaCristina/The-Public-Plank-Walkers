@@ -1,5 +1,5 @@
-﻿using Backend.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PointsOfInterestAPI.Auth;
 
 namespace PointsOfInterestAPI.Services
 {
