@@ -2,48 +2,52 @@ import React, { useState } from "react"
 import {ScrollView, StyleSheet, Text, View } from "react-native"
 import CustomButton from "./CustomButton"
 import CustomInput from "./CustomInputs"
+import { ShopForm } from "./ShopForm"
+
+enum ShopPageEnum {
+    login = 0,
+    form = 1,
+    camera = 2
+}
 
 export const LogInScreen = () => {
     const [username, setUsername] = useState<string>("");
+    const [isLoggedIn, setIsLoggedIn] = useState<ShopPageEnum>(0);
     return (
-    <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-            <Text style={styles.text_SignIN}>SIGN IN AS CLIENT</Text>
-            <CustomInput
-                placeholder="Username"
-                value={username}
-                setValue={setUsername}
-            />
-            <CustomInput
-                placeholder="Password"
-                value={username}
-                setValue={setUsername}
-                secureTextEntry={true}
-            />
+            {(() => {
+                switch (isLoggedIn) {
+                    case 0:
+                        return (
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                                <View>
+                                    <Text style={styles.text_SignIN}>SIGN IN AS CLIENT</Text>
+                                    <CustomInput
+                                        placeholder="Username"
+                                        value={username}
+                                        setValue={setUsername}
+                                        secureTextEntry={false}
+                                    />
+                                    <CustomInput
+                                        placeholder="Password"
+                                        value={username}
+                                        setValue={setUsername}
+                                        secureTextEntry={true}
+                                    />
 
-            {/*<CustomButton*/}
-            {/*    text="Forgot password?"*/}
-            {/*    onPress={onForgotPasswordPressed}*/}
-            {/*    type='TERTIARY'*/}
-            {/*/>*/}
-            <CustomButton text="Login" onPress={console.log("aici")}/>
-            {/*<CustomButton*/}
-            {/*    text="Sign In with Google"*/}
-            {/*    onPress={onSignInWithGoogle}*/}
-            {/*    backgrColor="#FAE9EA"*/}
-            {/*    foregrColor="#DD4D44"*/}
-
-            {/*/>*/}
-
-            {/*<CustomButton*/}
-            {/*    text="Don't have an account? Sign Up"*/}
-            {/*    onPress={onSignUpPressed}*/}
-            {/*    type='SECONDARY'*/}
-            {/*/>*/}
-
+                                    <CustomButton text="Login" onPress={() => setIsLoggedIn(1)} />
+                                </View>
+                            </ScrollView>
+                        );
+                    case 1:
+                        return <ShopForm />;
+                    default:
+                        return null;
+                }
+            })()}
         </View>
-    </ScrollView>);
-}
+    );
+};
 
 const styles = StyleSheet.create({
     text_SignIN:{
