@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PointsOfInterestAPI.Entities;
 
@@ -15,6 +16,7 @@ namespace PointsOfInterestAPI.Controllers
         }
 
         [HttpPut]
+        [EnableCors("AllowOrigin")]
         public async Task<IActionResult> UpdateInteraction(int id)
         {
             var _poi = await dbContext.PoIs.FindAsync(id);

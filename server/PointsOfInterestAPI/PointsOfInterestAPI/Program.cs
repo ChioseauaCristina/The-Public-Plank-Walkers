@@ -9,6 +9,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PoIDbContext>();
+builder.Services.AddCors(options => options.AddPolicy("EnableAll", policy =>
+{
+    policy.AllowAnyOrigin();
+    policy.AllowAnyMethod();
+    policy.AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -17,7 +23,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseCors();
+    app.UseCors("EnableAll");
 }
 
 app.UseHttpsRedirection();

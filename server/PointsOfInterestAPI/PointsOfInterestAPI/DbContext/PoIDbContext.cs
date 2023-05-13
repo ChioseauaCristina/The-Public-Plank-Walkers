@@ -3,6 +3,7 @@
 using Backend.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using PointsOfInterestAPI.Entities;
+using PointsOfInterestAPI.Auth;
 
 namespace PointsOfInterestAPI
 {
