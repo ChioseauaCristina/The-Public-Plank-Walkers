@@ -9,7 +9,7 @@ namespace PointsOfInterestAPI.Controllers
     [Route("api/[Controller]")]
     public class PoIController : ControllerBase
     {
-        private PoIDbContext dbContext;
+        private readonly PoIDbContext dbContext;
         public PoIController(PoIDbContext dbContext)
         {
             this.dbContext = dbContext;
