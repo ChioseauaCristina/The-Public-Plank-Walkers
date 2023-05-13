@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+    public class User
+using Microsoft.AspNetCore.Identity;
 using PointsOfInterestAPI.Entities;
 
 namespace PointsOfInterestAPI.Auth
