@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import {Button, PermissionsAndroid, StyleSheet, Text, View} from 'react-native';
+import {Button, Modal, PermissionsAndroid, Pressable, StyleSheet, Text, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {Icon} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
@@ -8,7 +8,7 @@ import {fetchInterestPoints} from "../Api";
 import axios from "axios";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import BottomSheet from "./BottomSheet";
-
+import { getDistance } from 'geolib';
 interface InterestPoint {
   latitude: string;
   longitude: string;
@@ -33,6 +33,7 @@ const styles1 = {
   }
 }
 export const Map = () => {
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [interestPoints, setInterestPoints] = useState<InterestPoint[]>(
     initialInterestPoints,
   );
@@ -41,6 +42,8 @@ export const Map = () => {
     longitude: number;
   }>({latitude: 45.74632, longitude: 21.23904});
 
+
+  console.log(initialPosition);
   const getInterestPoints = () => {
       fetchInterestPoints()
           //.then(res => console.log(res.data))
@@ -59,15 +62,15 @@ export const Map = () => {
     useEffect(() => {
       //requestLocationPermission().then(() => console.log("successs"));
       getInterestPoints();
-      Geolocation.getCurrentPosition(
-        position =>
-          setInitialPosition(prevPosition => ({
-            ...prevPosition,
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          })),
-        error => {console.log(error);},
-    );
+    //   Geolocation.getCurrentPosition(
+    //     position =>
+    //       setInitialPosition(prevPosition => ({
+    //         ...prevPosition,
+    //         latitude: position.coords.latitude,
+    //         longitude: position.coords.longitude,
+    //       })),
+    //     error => {console.log(error);},
+    // );
 
   }, []);
 
@@ -93,8 +96,36 @@ export const Map = () => {
     }
   }
 
+
+  const [distance, setDistance] = useState<number>(0);
   return (
     <View style={styles.MainContainer}>
+      <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+        <View style={stylesModal.centeredView}>
+          <View style={stylesModal.modalView}>
+            <Text style={stylesModal.modalText}>Will you go?</Text>
+            <Text style={stylesModal.modalText}>The approximate distance is {distance.toFixed(2)}km.</Text>
+            <View style={stylesModal.inlineButtons}>
+            <Pressable
+                style={[stylesModal.button, stylesModal.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={stylesModal.textStyle}>Yes</Text>
+            </Pressable>
+            <Pressable
+                style={[stylesModal.button, stylesModal.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={stylesModal.textStyle}>No</Text>
+            </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <MapView
         style={styles.mapStyle}
         showsUserLocation={false}
@@ -114,7 +145,7 @@ export const Map = () => {
               latitude: marker.latitude ? parseFloat(marker.latitude) : 0,
               longitude: marker.longitude ? parseFloat(marker.longitude) : 0,
             }}
-            onPress={() => console.log(marker.id)}
+            onPress={() => {setModalVisible(true); setDistance(getDistance(initialPosition, {latitude:  parseFloat(marker.latitude), longitude: parseFloat( marker.longitude)}) / 1000);} }
           >
             <Icon name="festival" type="materialicons" color="black" />
           </Marker>
@@ -124,7 +155,7 @@ export const Map = () => {
             latitude: initialPosition.latitude,
             longitude: initialPosition.longitude,
           }}
-          onPress={() => console.log("pressed")}
+          onPress={() => setModalVisible(true) }
         />
       </MapView>
     </View>
@@ -149,6 +180,56 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 });
+
+const stylesModal = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  inlineButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginRight: 5
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+});
+
 
 const mapStyles = [
   {
