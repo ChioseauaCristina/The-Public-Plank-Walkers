@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
+using Backend.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using PointsOfInterestAPI.Entities;
 
 namespace PointsOfInterestAPI
@@ -18,6 +21,11 @@ namespace PointsOfInterestAPI
             options.UseSqlServer(Configuration.GetConnectionString("WebApiDatabase"));
         }
         public DbSet<PoI> PoIs { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Destination> Destinations { get; set; }
+        public DbSet<Que> Ques { get; set; }
+        public DbSet<DetectionObject> DetectionObjects { get; set; }
+        public DbSet<Claims> Claims { get; set; }
 
     }
 }
