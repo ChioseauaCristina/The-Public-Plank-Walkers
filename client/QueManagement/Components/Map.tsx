@@ -51,17 +51,17 @@ export const Map = () => {
           .catch((err) => console.log(err.message));
   };
 
+
   const postInterestPoints = (id: string) => {
     axios
-        .post("///", {
-          id: id
-        })
+        .put("http://10.0.2.2:5080:5080/api/PoIInteraction", {params: {id: id}})
         .catch((err) => console.log(err));
   }
 
     useEffect(() => {
       //requestLocationPermission().then(() => console.log("successs"));
       getInterestPoints();
+      postInterestPoints("5");
     //   Geolocation.getCurrentPosition(
     //     position =>
     //       setInitialPosition(prevPosition => ({
@@ -73,6 +73,8 @@ export const Map = () => {
     // );
 
   }, []);
+
+
 
   async function requestLocationPermission() {
     try {
@@ -97,7 +99,7 @@ export const Map = () => {
   }
 
 
-  const [distance, setDistance] = useState<number>(0);
+  const [possibleEvent, setPossibleEvent] = useState<{distance: number, id: string}>({distance: 0, id: "0"});
   return (
     <View style={styles.MainContainer}>
       <Modal
@@ -110,7 +112,7 @@ export const Map = () => {
         <View style={stylesModal.centeredView}>
           <View style={stylesModal.modalView}>
             <Text style={stylesModal.modalText}>Will you go?</Text>
-            <Text style={stylesModal.modalText}>The approximate distance is {distance.toFixed(2)}km.</Text>
+            <Text style={stylesModal.modalText}>The approximate distance is {possibleEvent.distance.toFixed(2)}km.</Text>
             <View style={stylesModal.inlineButtons}>
             <Pressable
                 style={[stylesModal.button, stylesModal.buttonClose]}
@@ -145,7 +147,9 @@ export const Map = () => {
               latitude: marker.latitude ? parseFloat(marker.latitude) : 0,
               longitude: marker.longitude ? parseFloat(marker.longitude) : 0,
             }}
-            onPress={() => {setModalVisible(true); setDistance(getDistance(initialPosition, {latitude:  parseFloat(marker.latitude), longitude: parseFloat( marker.longitude)}) / 1000);} }
+            onPress={() => {setModalVisible(true);
+              setPossibleEvent(ipe =>
+                ({...ipe, distance: getDistance(initialPosition, {latitude:  parseFloat(marker.latitude), longitude: parseFloat(marker.longitude)}) / 1000}));}}
           >
             <Icon name="festival" type="materialicons" color="black" />
           </Marker>

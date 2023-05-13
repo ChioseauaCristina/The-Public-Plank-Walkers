@@ -46,7 +46,7 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(true);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   return (
       <SafeAreaView style={{flex: 1}}>
         {/*<NavigationContainer>*/}
