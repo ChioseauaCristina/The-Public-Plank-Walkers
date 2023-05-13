@@ -4,7 +4,7 @@
  *
  * @format
  */
-import React from 'react';
+import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -29,6 +29,7 @@ import MapView, {Marker} from "react-native-maps";
 import { Icon } from '@rneui/themed';
 import {Map} from "./Components/Map";
 import BottomSheet from "./Components/BottomSheet";
+import { LogInScreen } from './ShopComponents/LogInScreen';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 type SectionProps = PropsWithChildren<{
@@ -45,6 +46,7 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const [loggedIn, setLoggedIn] = useState<boolean>(true);
   return (
       <SafeAreaView style={{flex: 1}}>
         {/*<NavigationContainer>*/}
@@ -52,7 +54,7 @@ function App(): JSX.Element {
         {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
         {/*  </Stack.Navigator>*/}
         {/*</NavigationContainer>*/}
-        <BottomSheet />
+        {loggedIn ? <BottomSheet /> : <LogInScreen />}
       </SafeAreaView>
   );
 }
