@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PointsOfInterestAPI.Entities;
 
@@ -15,6 +16,7 @@ namespace PointsOfInterestAPI.Controllers
         }
 
         [HttpGet]
+        [EnableCors("AllowOrigin")]
         public async Task<IActionResult> GetPois()
         {
             return Ok(await dbContext.PoIs.ToListAsync());
