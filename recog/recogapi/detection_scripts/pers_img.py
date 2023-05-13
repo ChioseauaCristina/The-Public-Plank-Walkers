@@ -45,3 +45,5 @@ def detect_people(file_path):
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     return num_people
+
+print(detect_people(os.path.join(cdir, 'recogapi', 'detection_scripts', "people.jpg")))
