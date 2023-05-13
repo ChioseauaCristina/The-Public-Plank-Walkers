@@ -1,4 +1,5 @@
-﻿using PointsOfInterestAPI.Auth;
+﻿using Backend.Data.Models;
+using PointsOfInterestAPI.Auth;
 
 namespace PointsOfInterestAPI.Services
 {

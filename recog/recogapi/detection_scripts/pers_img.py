@@ -5,9 +5,9 @@ import imutils
 import pathlib
 
 cdir = pathlib.Path().resolve()
-print( os.path.join(cdir, 'recogapi', 'detection_scripts', "MobileNetSSD_deploy.prototxt"))
-protopath = os.path.join(cdir, 'recogapi', 'detection_scripts', "MobileNetSSD_deploy.prototxt")
-modelpath = os.path.join(cdir, 'recogapi', 'detection_scripts', "MobileNetSSD_deploy.caffemodel")
+print( os.path.join(cdir, "MobileNetSSD_deploy.prototxt"))
+protopath = os.path.join(cdir, "MobileNetSSD_deploy.prototxt")
+modelpath = os.path.join(cdir, "MobileNetSSD_deploy.caffemodel")
 detector = cv2.dnn.readNetFromCaffe(prototxt=protopath, caffeModel=modelpath)
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
            "bottle", "bus", "car", "cat", "chair", "cow", "diningtable",
@@ -45,3 +45,5 @@ def detect_people(file_path):
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     return num_people
+
+print(detect_people(os.path.join(cdir, "people.jpg")))
