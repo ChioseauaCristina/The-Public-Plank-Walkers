@@ -15,7 +15,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import {NavigationContainer} from '@react-navigation/native';
 
 
 import {
@@ -29,6 +29,7 @@ import MapView, {Marker} from "react-native-maps";
 import { Icon } from '@rneui/themed';
 import {Map} from "./Components/Map";
 import BottomSheet from "./Components/BottomSheet";
+// import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -47,15 +48,9 @@ function App(): JSX.Element {
   return (
       <SafeAreaView style={{flex: 1}}>
         {/*<NavigationContainer>*/}
-        {/*  <Drawer.Navigator*/}
-        {/*      drawerType="front"*/}
-        {/*      initialRouteName="Profile"*/}
-        {/*      drawerContentOptions={{*/}
-        {/*        activeTintColor: '#e91e63',*/}
-        {/*        itemStyle: { marginVertical: 10 },*/}
-        {/*      }}*/}
-        {/*  >*/}
-        {/*  </Drawer.Navigator>*/}
+        {/*  <Stack.Navigator screenOptions={{headerShown: false}}>*/}
+        {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
+        {/*  </Stack.Navigator>*/}
         {/*</NavigationContainer>*/}
         <BottomSheet />
       </SafeAreaView>

@@ -10,14 +10,18 @@ import SlidingUpPanel from "rn-sliding-up-panel";
 import BottomSheet from "./BottomSheet";
 
 interface InterestPoint {
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   id: string;
+  name: string;
+  location: string;
+  //queList: any;
+  virtualQue: number;
 }
 
 const initialInterestPoints = [
-  {latitude: 45.78173642570172, longitude: 21.22622501567062, id: '69'},
-  {latitude: 45.75852373718626, longitude: 21.22326607813157, id: '2'},
+  {latitude: "45.78173642570172", longitude: "21.22622501567062", id: '69', name:"First", location: "Aici", virtualQue: 2},
+  // {latitude: 45.75852373718626, longitude: 21.22326607813157, id: '2'},
 ];
 
 const styles1 = {
@@ -39,8 +43,9 @@ export const Map = () => {
 
   const getInterestPoints = () => {
       fetchInterestPoints()
+          //.then(res => console.log(res.data))
           .then((res) => {setInterestPoints(res.data);})
-          .catch((err) => console.log(err));
+          .catch((err) => console.log(err.message));
   };
 
   const postInterestPoints = (id: string) => {
@@ -53,6 +58,7 @@ export const Map = () => {
 
     useEffect(() => {
       //requestLocationPermission().then(() => console.log("successs"));
+      getInterestPoints();
       Geolocation.getCurrentPosition(
         position =>
           setInitialPosition(prevPosition => ({
@@ -60,9 +66,9 @@ export const Map = () => {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           })),
-        error => {console.log(error);console.log("kkkkk")},
+        error => {console.log(error);},
     );
-    //getInterestPoints();
+
   }, []);
 
   async function requestLocationPermission() {
@@ -101,12 +107,12 @@ export const Map = () => {
           longitudeDelta: 0.0421,
         }}
         customMapStyle={mapStyles}>
-        {interestPoints.map((marker, index) => (
+        {interestPoints?.map((marker, index) => (
           <Marker
             key={index}
             coordinate={{
-              latitude: marker.latitude,
-              longitude: marker.longitude,
+              latitude: marker.latitude ? parseFloat(marker.latitude) : 0,
+              longitude: marker.longitude ? parseFloat(marker.longitude) : 0,
             }}
             onPress={() => console.log(marker.id)}
           >
