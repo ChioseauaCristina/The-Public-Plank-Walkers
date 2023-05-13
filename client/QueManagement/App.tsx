@@ -30,6 +30,7 @@ import { Icon } from '@rneui/themed';
 import {Map} from "./Components/Map";
 import BottomSheet from "./Components/BottomSheet";
 import { LogInScreen } from './ShopComponents/LogInScreen';
+import { Camera } from './ShopComponents/Camera';
 // import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 type SectionProps = PropsWithChildren<{
@@ -48,14 +49,15 @@ function App(): JSX.Element {
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   return (
-      <SafeAreaView style={{flex: 1}}>
-        {/*<NavigationContainer>*/}
-        {/*  <Stack.Navigator screenOptions={{headerShown: false}}>*/}
-        {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
-        {/*  </Stack.Navigator>*/}
-        {/*</NavigationContainer>*/}
-        {loggedIn ? <BottomSheet /> : <LogInScreen />}
-      </SafeAreaView>
+      // <SafeAreaView style={{flex: 1}}>
+      //   {/*<NavigationContainer>*/}
+      //   {/*  <Stack.Navigator screenOptions={{headerShown: false}}>*/}
+      //   {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
+      //   {/*  </Stack.Navigator>*/}
+      //   {/*</NavigationContainer>*/}
+      //   {loggedIn ? <BottomSheet /> : <LogInScreen />}
+      // </SafeAreaView>
+      <Camera />
   );
 }
 
