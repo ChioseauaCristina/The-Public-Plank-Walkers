@@ -1,11 +1,6 @@
-using Microsoft.AspNetCore.Identity;
+using Backend.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using Microsoft.EntityFrameworkCore;
 
 namespace PointsOfInterestAPI.Auth
 {
@@ -13,56 +8,80 @@ namespace PointsOfInterestAPI.Auth
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly UserManager<User> userManager;
-        private readonly IConfiguration _configuration;
+        private readonly PoIDbContext _poIDbContext;
 
-        public UsersController(UserManager<User> userManager, IConfiguration configuration)
+        public UsersController(PoIDbContext poIDbContext)
         {
-            this.userManager = userManager;
-            _configuration = configuration;
+            _poIDbContext = poIDbContext;
         }
 
         [HttpPost]
-        public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
+        [Route("/login")]
+        public async Task<ActionResult<User>> Login(LoginRequest request)
         {
-            var user = await userManager.FindByNameAsync(request.Username);
+            var user = await _poIDbContext.Users.FindAsync(request.Username);
             if (user == null)
             {
-                return Unauthorized("Username not found");
+                return Unauthorized("Username is wrong");
             }
 
-            var wrongPass = !await userManager.CheckPasswordAsync(user, request.Password);
-            if (wrongPass)
-            {
-                return Unauthorized("Incorrect Password");
+            if (!request.Password.Equals(user.Password)) {
+                return Unauthorized("Incorrect password");
             }
 
-            var userRoles = await userManager.GetRolesAsync(user);
+            return Ok(user);
+        }
 
-            if (userRoles == null)
+        [HttpPost]
+        public async Task<ActionResult<User>> Register(RegisterRequest request)
+        {
+            Random rand = new Random();
+            var user = new User
             {
-                await userManager.AddToRoleAsync(user, Utils.Roles.Client);
-            }
-
-            var authClaims = new List<Claim>
-            {
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new("id", user.Id)
+                Id = rand.Next(),
+                Username = request.Username,
+                Password = request.Password,
+                Role = request.Role
             };
 
-            authClaims.AddRange(userRoles.Select(role => new Claim("role", role)));
+            var result = await _poIDbContext.Users.AddAsync(user);
 
-            var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            await _poIDbContext.SaveChangesAsync();
 
-            var token = new JwtSecurityToken(
-                expires: DateTime.Now.AddDays(1),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigninKey,SecurityAlgorithms.HmacSha256)
-            );
+            return Ok(result.Entity);
+        }
 
-            return Ok(new LoginResponse { 
-                
-            });
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> Get()
+        {
+            return Ok(await _poIDbContext.Users.ToListAsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> Get([FromRoute] string id)
+        {
+            var user = await _poIDbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromRoute] string id)
+        {
+            var user = await _poIDbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var result = _poIDbContext.Users.Remove(user);
+            await _poIDbContext.SaveChangesAsync();
+
+            return Ok(result.Entity);
+        }
     }
 }
