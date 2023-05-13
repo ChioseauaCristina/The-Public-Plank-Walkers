@@ -2,16 +2,45 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InterestPointClient.LoginPage"
-             Title="Queue Detecting - Intrest Point">
-    <VerticalStackLayout Margin="80">
-        <Label
+             Shell.NavBarIsVisible ="False">
+    <VerticalStackLayout
+        Spacing = "25"
+        Padding="30,0"
+        VerticalOptions="Center">
+        
+        <VerticalStackLayout Spacing="5">
+            <Label
                 Text="Welcome!"
-                SemanticProperties.HeadingLevel="Level1"
+                TextColor="Gray"
                 FontSize="32"
-                HorizontalOptions="Center" />
+                HorizontalTextAlignment="Center" />
+            <Label 
+                Text="Log in to your account"
+                TextColor="Gray"
+                FontSize="18"
+                HorizontalTextAlignment="Center" />
 
-        <Entry x:Name="usernameEntry" Placeholder="Your username"/>
-        <Entry x:Name="passwordEntry" Placeholder="Your password" IsPassword="True"/>
-        <Button Text="Login"/>
+        </VerticalStackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Frame ZIndex="1" HasShadow="true" BorderColor="White" HeightRequest="56" WidthRequest="56" CornerRadius="28"/>
+            <Frame Margin="-20,0,0,0" HorizontalOptions="FillAndExpand" HasShadow="true" BorderColor="White" >
+                <Entry x:Name="usernameEntry" VerticalOptions="Center" Placeholder="User Name"/>
+            </Frame>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Frame ZIndex="1" HasShadow="true" BorderColor="White" HeightRequest="56" WidthRequest="56" CornerRadius="28"/>
+            <Frame Margin="-20,0,0,0" HorizontalOptions="FillAndExpand" HasShadow="true" BorderColor="White">
+                <Entry x:Name="passwordEntry" VerticalOptions="Center" Placeholder="Password" IsPassword="True"/>
+            </Frame>
+        </StackLayout>
+
+        <Button WidthRequest="100" CornerRadius="20" HorizontalOptions="Center" Text="Log In" BackgroundColor="Blue"/>
+
+        <StackLayout Orientation="Horizontal" Spacing="5" HorizontalOptions="Center">
+            <Label Text="Don't have an account?" TextColor="Gray"/>
+            <Label Text="Sign up here!" TextColor="Gray"/>
+        </StackLayout>
     </VerticalStackLayout>
-</ContentPage>
+</ContentPage>      
