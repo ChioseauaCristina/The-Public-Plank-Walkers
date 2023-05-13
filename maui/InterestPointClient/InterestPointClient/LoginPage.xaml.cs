@@ -1,5 +1,7 @@
+using Microsoft.Maui.Graphics.Text;
 using Newtonsoft.Json;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace InterestPointClient;
 
@@ -9,21 +11,117 @@ public partial class LoginPage : ContentPage
     {
         InitializeComponent();
 
+
+        Label label1 = new Label { Text = "Welcome!", FontSize = 32, HorizontalOptions = LayoutOptions.Center };
+        Label label2 = new Label { Text = "Log in to your account", FontSize = 18, HorizontalOptions = LayoutOptions.Center };
+
+        
+
+
+        var frame1 = new Frame
+        {
+            BorderColor = Color.FromRgba("#ffffff"),
+            CornerRadius = 28,
+            HorizontalOptions = LayoutOptions.Center,
+            Padding = 20,
+        };
+
         var usernameEntry = new Entry
         {
-            Placeholder = "Username"
+            Placeholder = "User Name",
+            VerticalOptions = LayoutOptions.CenterAndExpand
+        };
+
+        var stackLayout1 = new StackLayout
+        {
+            Orientation = StackOrientation.Vertical,
+            Children =
+                {
+                    frame1,
+                    new Frame
+                    {
+                        HeightRequest = 100,
+                        WidthRequest = 350,
+                        BorderColor = Color.FromRgba("#ffffff"),
+                        HorizontalOptions = LayoutOptions.Center,
+                        HasShadow = true,
+                        CornerRadius = 28,
+                        Content = usernameEntry
+                    }
+                }
+        };
+
+        var frame2 = new Frame
+        {
+            BorderColor = Color.FromRgba("#ffffff"),
+            CornerRadius = 28,
+            HorizontalOptions = LayoutOptions.Center,
         };
 
         var passwordEntry = new Entry
         {
+            
             Placeholder = "Password",
-            IsPassword = true
+            IsPassword = true,
+            VerticalOptions = LayoutOptions.CenterAndExpand
         };
 
-        var loginButton = new Button
+        var stackLayout2 = new StackLayout
         {
-            Text = "Login"
+            Orientation = StackOrientation.Vertical,
+            Children =
+                {
+                    frame2,
+                    new Frame
+                    {
+                        HeightRequest = 100,
+                        WidthRequest = 350,
+                        HasShadow = true,
+                        BorderColor = Color.FromRgba("#ffffff"),
+                        CornerRadius = 28,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        Content = passwordEntry,
+                    }
+                }
         };
+
+        var verticalStackLayout = new VerticalStackLayout
+        {
+            Spacing = 5,
+            VerticalOptions = LayoutOptions.Center,
+            Children =
+                {
+                    label1,
+                    label2
+                }
+        };
+
+        var mainVerticalStackLayout = new VerticalStackLayout
+        {
+            Children =
+                {
+                    verticalStackLayout,
+                    stackLayout1,
+                    stackLayout2,
+                    
+
+                }
+        };
+
+        Content = mainVerticalStackLayout;
+
+        Button loginButton = new Button
+        {
+
+            Text = "Log in",
+            CornerRadius = 28,
+            HorizontalOptions = LayoutOptions.CenterAndExpand,
+            VerticalOptions = LayoutOptions.CenterAndExpand,
+            Padding=30
+        };
+        mainVerticalStackLayout.Children.Add(loginButton);
+
+
 
         loginButton.Clicked += async (sender, e) =>
         {
@@ -40,10 +138,11 @@ public partial class LoginPage : ContentPage
             {
                 // Login successful
                 // Save the token or use it for further API requests
-                
+
                 // Navigate to the next page or perform necessary actions
                 await DisplayAlert("Success", "Login successful!", "OK");
                 await Shell.Current.GoToAsync(Routes.Main);
+                await Navigation.PushAsync(new MainPage());
             }
             else
             {
@@ -55,13 +154,9 @@ public partial class LoginPage : ContentPage
             // Enable the login button
             loginButton.IsEnabled = true;
         };
-
-        Content = new StackLayout
-        {
-            Margin = new Thickness(20),
-            Children = { usernameEntry, passwordEntry, loginButton }
-        };
     }
+    
+
 
     public object ApiBaseUrl { get; private set; } = "";
     public object TokenEndpoint { get; private set; } = "";
@@ -94,7 +189,6 @@ public partial class LoginPage : ContentPage
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
         return null;
     }
 
