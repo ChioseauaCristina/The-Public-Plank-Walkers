@@ -21,7 +21,7 @@ class ListApiView(APIView):
             with open(save_path, 'wb') as f:
                  for chunk in image.chunks():
                     f.write(chunk)
-
+        
         #call with it
             result = detection.detect_people(filename)
         # Delete file afterwards

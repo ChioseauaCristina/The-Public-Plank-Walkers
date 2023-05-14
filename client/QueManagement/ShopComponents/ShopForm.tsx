@@ -38,7 +38,7 @@ export const ShopForm = (props: ShopFormProps) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Register enterprise</Text>
+            <Text style={styles.title}>Register point of interest</Text>
             <CustomInputShop
                 control={control}
                 name={'patientName'}
@@ -49,8 +49,9 @@ export const ShopForm = (props: ShopFormProps) => {
                 name={'location'}
                 placeholder={'Location'}
             />
-            <CustomInputShop control={control} name={'latitude'} placeholder={'Latitude'} />
-            <CustomInputShop control={control} name={'longitude'} placeholder={'Longitude'} />
+            <CustomInputShop control={control} name={'latitude'} placeholder={'Latitude'} defaultValue={"45.78173642570172"}/>
+            <CustomInputShop control={control} name={'longitude'} placeholder={'Longitude'} defaultValue={"21.22622501567062"}/>
+            <CustomInputShop control={control} name={'maxCapacity'} placeholder={'Maximum capacity'} numerical={true} />
             <TouchableOpacity
                 style={styles.button}
                 onPress={handleSubmit(data => onSubmitPressed(data))}>

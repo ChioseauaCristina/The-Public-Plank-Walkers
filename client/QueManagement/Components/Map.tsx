@@ -19,6 +19,7 @@ interface InterestPoint {
   virtualQue: number;
 }
 
+
 const initialInterestPoints = [
   {latitude: "45.78173642570172", longitude: "21.22622501567062", id: '69', name:"First", location: "Aici", virtualQue: 2},
   // {latitude: 45.75852373718626, longitude: 21.22326607813157, id: '2'},

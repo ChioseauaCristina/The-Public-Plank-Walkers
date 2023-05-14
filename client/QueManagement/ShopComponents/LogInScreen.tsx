@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, Text, View } from "react-native"
 import { Camera } from "./Camera"
 import CustomButton from "./CustomButton"
 import CustomInput from "./CustomInputs"
+import { Graphs } from "./graphs"
 import { ShopForm } from "./ShopForm"
 
 enum ShopPageEnum {
@@ -13,6 +14,7 @@ enum ShopPageEnum {
 
 export const LogInScreen = () => {
     const [username, setUsername] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [isLoggedIn, setIsLoggedIn] = useState<ShopPageEnum>(0);
     return (
         <View>
@@ -31,8 +33,8 @@ export const LogInScreen = () => {
                                     />
                                     <CustomInput
                                         placeholder="Password"
-                                        value={username}
-                                        setValue={setUsername}
+                                        value={password}
+                                        setValue={setPassword}
                                         secureTextEntry={true}
                                     />
 
@@ -43,7 +45,7 @@ export const LogInScreen = () => {
                     case 1:
                         return <ShopForm onSubmit = {() => setIsLoggedIn(2)}/>;
                     case 2:
-                        return <Camera />
+                        return <Graphs />
                     default:
                         return null;
                 }

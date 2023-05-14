@@ -49,15 +49,15 @@ function App(): JSX.Element {
 
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   return (
-      // <SafeAreaView style={{flex: 1}}>
-      //   {/*<NavigationContainer>*/}
-      //   {/*  <Stack.Navigator screenOptions={{headerShown: false}}>*/}
-      //   {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
-      //   {/*  </Stack.Navigator>*/}
-      //   {/*</NavigationContainer>*/}
-      //   {loggedIn ? <BottomSheet /> : <LogInScreen />}
-      // </SafeAreaView>
-      <Camera />
+      <SafeAreaView style={{flex: 1}}>
+        {/*<NavigationContainer>*/}
+        {/*  <Stack.Navigator screenOptions={{headerShown: false}}>*/}
+        {/*    <Stack.Screen name="SignInAsScreen" component={SignInAsScreen} />*/}
+        {/*  </Stack.Navigator>*/}
+        {/*</NavigationContainer>*/}
+        {loggedIn ? <BottomSheet /> : <LogInScreen />}
+      </SafeAreaView>
+      // <Camera />
   );
 }
 

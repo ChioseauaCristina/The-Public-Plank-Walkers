@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Text, View, Dimensions, Animated } from "react-native";
 
 import SlidingUpPanel from "rn-sliding-up-panel";
@@ -79,6 +79,15 @@ const styles = {
     }
 };
 
+
+
+const initialInterestPoints = [
+    {latitude: "45.78173642570172", longitude: "21.22622501567062", id: '69', name:"First", location: "Aici", virtualQue: 2},
+    // {latitude: 45.75852373718626, longitude: 21.22326607813157, id: '2'},
+];
+
+
+
 class BottomSheet extends React.Component {
     static defaultProps = {
         draggableRange: { top: height + 180 - 64, bottom: 180 }
@@ -88,6 +97,7 @@ class BottomSheet extends React.Component {
 
     render() {
         const { top, bottom } = this.props.draggableRange;
+
 
         const backgoundOpacity = this._draggedValue.interpolate({
             inputRange: [height - 48, height],
@@ -130,6 +140,7 @@ class BottomSheet extends React.Component {
                     height={height + 180}
                     friction={0.5}
                 >
+
                     <View style={styles.panel}>
                         <Animated.View
                             style={[
@@ -150,16 +161,18 @@ class BottomSheet extends React.Component {
                                     ]
                                 }}
                             >
-                                <Text style={styles.textHeader}>Events going on right now</Text>
+                                <Text style={styles.textHeader}>Where you could go</Text>
                             </Animated.View>
                         </View>
                             <View style={styles.listContainer}>
-                                <View style={styles.section}>
+                                {objects.map(m =>
+                                    <View style={styles.section}>
                                     <View style={{marginRight: 110}}>
-                                        <Text style={styles.label}>Name:</Text>
-                                        <Text style={styles.value}>A name</Text>
+                                        <Text style={styles.label}>{m.name}</Text>
+                                        <Text style={styles.value}>{m.place}</Text>
                                     </View>
-                                </View>
+                                </View>)}
+
                             </View>
                     </View>
                 </SlidingUpPanel>

@@ -1,60 +1,46 @@
-// import React from "react"
-// import {Button, StyleSheet, Text, View } from "react-native";
-// import {RNCamera} from 'react-native-camera';
-// import {useCamera} from 'react-native-camera-hooks';
-//
-// export const Camera = () => {
-//     const captureHandle = async() => {
-//         try {
-//             const data = await takePicture();
-//             console.log(data.uri);
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     }
-//     const [{cameraRef}, {takePicture}] = useCamera(null);
-//     return (<View>
-//         <RNCamera ref={cameraRef} type={RNCamera.Constants.Type.back}
-//              captureAudio={false}>
-//             {/*<Button title="Capture" onPress={() => captureHandle()}>*/}
-//
-//             {/*</Button>*/}
-//         </RNCamera>
-//     </View>)
-// }
-//
-// const styles = StyleSheet.create({
-//     preview: {
-//         flex: 1,
-//         alignItems: "center",
-//         justifyContent: "flex-end"
-//     }
-// })
-
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import axios from 'axios';
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 
 export const Camera = () => {
     const [photo, setPhoto] = useState(null);
+    const cameraRef = useRef(null);
 
-    const takePicture = async (camera) => {
-        const options = { quality: 0.5, base64: true };
-        const data = await camera.takePictureAsync(options);
-        setPhoto(data.uri);
+    const takePicture = async () => {
+        if (cameraRef.current) {
+            const options = { quality: 0.5, base64: true };
+            const data = await cameraRef.current.takePictureAsync(options);
+            setPhoto(data.uri);
+        }
     };
 
-
-    const uploadPhoto = () => {
+    // const API = axios.create({ baseURL: 'http://10.0.2.2:5080'});
+    const uploadPhoto = async () => {
         // Add code to send the photo to an API here
+        try {
+            const formData = new FormData();
+            formData.append('image', {
+                uri: photo,
+                name: 'photo.jpg',
+                type: 'image/jpeg',
+            });
+            console.log(photo);
+            // const res = await API.post()
+            const response = await axios({url: 'http://10.0.2.2:8000/api/blah', data: formData, method: "POST"});
+            console.log(response.data);
+            setPhoto(null); // Resets the photo state to null to show the camera view again
+        } catch (error) {
+            console.error(error);
+            setPhoto(null);
+        }
     };
 
     return (
         <View style={styles.container}>
-            {photo ? (
-                <Image source={{ uri: photo }} style={styles.preview} />
-            ) : (
+            {!photo && (
                 <RNCamera
+                    ref={cameraRef}
                     style={styles.camera}
                     type={RNCamera.Constants.Type.back}
                     captureAudio={false}
@@ -62,7 +48,7 @@ export const Camera = () => {
                     {({ camera, status }) => {
                         if (status !== 'READY') return <View />;
                         return (
-                            <TouchableOpacity onPress={() => takePicture(camera)} style={styles.button}>
+                            <TouchableOpacity onPress={takePicture} style={styles.button}>
                                 <Text style={styles.buttonText}>Take Photo</Text>
                             </TouchableOpacity>
                         );
@@ -101,11 +87,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 18,
-    },
-    preview: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
     },
     uploadButton: {
         width: 200,
