@@ -15,7 +15,7 @@ namespace PointsOfInterestAPI.Controllers
             this.dbContext = dbContext;
         }
 
-        [HttpPut]
+        [HttpPost]
         [EnableCors("AllowOrigin")]
         public async Task<IActionResult> UpdateInteraction(int id)
         {
