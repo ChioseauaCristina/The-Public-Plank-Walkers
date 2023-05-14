@@ -47,7 +47,7 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [loggedIn, setLoggedIn] = useState<boolean>(true);
   return (
       <SafeAreaView style={{flex: 1}}>
         {/*<NavigationContainer>*/}
@@ -57,7 +57,6 @@ function App(): JSX.Element {
         {/*</NavigationContainer>*/}
         {loggedIn ? <BottomSheet /> : <LogInScreen />}
       </SafeAreaView>
-      // <Camera />
   );
 }
 

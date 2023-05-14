@@ -129,6 +129,13 @@ class BottomSheet extends React.Component {
             extrapolate: "clamp"
         });
 
+        const objects = [{name: "Zaza", place: "Complex"},
+            {name: "Farmacia Dona", place: "Farmaceutice"},
+            {name: "Lidl", place: "Magazine"},
+            {name: "Heaven", place: "Clubbing"},
+            {name: "First", place: "First"}
+        ]
+
         return (
             <View style={styles.container}>
                 <Map />

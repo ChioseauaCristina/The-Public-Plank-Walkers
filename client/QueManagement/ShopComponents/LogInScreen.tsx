@@ -3,13 +3,15 @@ import {ScrollView, StyleSheet, Text, View } from "react-native"
 import { Camera } from "./Camera"
 import CustomButton from "./CustomButton"
 import CustomInput from "./CustomInputs"
-import { Graphs } from "./graphs"
+import { Graphs } from "./Graphs"
+
 import { ShopForm } from "./ShopForm"
 
 enum ShopPageEnum {
     login = 0,
     form = 1,
-    camera = 2
+    graph = 2,
+    map = 3
 }
 
 export const LogInScreen = () => {
